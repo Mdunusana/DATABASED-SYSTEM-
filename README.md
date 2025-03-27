@@ -782,7 +782,128 @@ Smith_DateOfBirth, Smith_Email) VALUES ('Test', 'User', '2000-01-01',
 INSERT INTO Smith_Leases (Smith_ClientID, Smith_VideoID, Smith_LeaseDate, 
 Smith_DueDate, Smith_ReturnDate) VALUES (999, 1, '2023-10-01', '2023-10-08', 
 NULL); 
- 
+
+
+
+
+Practice test 2 
+
+Databases _Memo  
+
+Cape Town Municipality SQL Task 
+
+You are hired to create a database system for the Cape Town Municipality. This system will 
+manage important data such as residents, municipal services (e.g., water, electricity, waste 
+collection), and monthly billing information. 
+
+Task: 
+
+Create a database for the Cape Town Municipality based on the information provided. You must 
+decide how many tables are needed, what relationships exist between them, and the 
+appropriate fields, keys, and constraints. 
+
+SQL Queries: 
+
+After creating and populating your database with sample data (at least 5 records per table), 
+answer the following questions: 
+
+Creating and populating tables : 
+
+Create Residents table 
+
+CREATE TABLE Residents ( 
+ResidentID INT PRIMARY KEY, 
+Name VARCHAR(50), 
+Surname VARCHAR(50), 
+Address VARCHAR(100), 
+ContactNumber VARCHAR(20) 
+); 
+Create Services table 
+CREATE TABLE Services ( 
+ServiceID INT PRIMARY KEY, 
+ServiceName VARCHAR(50), 
+CostPerMonth DECIMAL(10,2) 
+); 
+Create Billing table 
+CREATE TABLE Billing ( 
+BillID INT PRIMARY KEY, 
+ResidentID INT, 
+ServiceID INT, 
+BillingDate DATE, 
+AmountDue DECIMAL(10,2), 
+FOREIGN KEY (ResidentID) REFERENCES Residents(ResidentID), 
+FOREIGN KEY (ServiceID) REFERENCES Services(ServiceID) 
+); 
+POPULATING THE TABLES 
+Insert into Residents 
+INSERT INTO Residents VALUES (1, 'John', 'Smith', 'Khayelitsha', '0123456789'); 
+INSERT INTO Residents VALUES (2, 'Mary', 'Adams', 'Bellville', '0987654321'); 
+INSERT INTO Residents VALUES (3, 'Lungile', 'Dlamini', 'Mitchells Plain', '0765432198'); 
+INSERT INTO Residents VALUES (4, 'Sara', 'Naidoo', 'Durbanville', '0841234567'); 
+INSERT INTO Residents VALUES (5, 'Peter', 'Williams', 'Khayelitsha', '0749876543'); -- Insert into Services 
+INSERT INTO Services VALUES (1, 'Water', 200.00); 
+INSERT INTO Services VALUES (2, 'Electricity', 350.00); 
+INSERT INTO Services VALUES (3, 'Waste Collection', 150.00); 
+INSERT INTO Services VALUES (4, 'Sewerage', 180.00); 
+INSERT INTO Services VALUES (5, 'Street Lighting', 100.00); -- Insert into Billing 
+INSERT INTO Billing VALUES (1, 1, 1, '2025-03-01', 200.00); 
+INSERT INTO Billing VALUES (2, 1, 2, '2025-03-01', 350.00); 
+INSERT INTO Billing VALUES (3, 2, 3, '2025-03-01', 150.00); 
+INSERT INTO Billing VALUES (4, 3, 1, '2025-03-01', 200.00); 
+INSERT INTO Billing VALUES (5, 3, 2, '2025-03-01', 350.00); 
+INSERT INTO Billing VALUES (6, 4, 4, '2025-03-01', 180.00); 
+INSERT INTO Billing VALUES (7, 5, 2, '2025-03-01', 350.00); 
+a) Use a UNION query to combine and display all unique resident names and service 
+names in a single column. 
+Answer: 
+SELECT Name AS Data FROM Residents 
+UNION 
+SELECT ServiceName AS Data FROM Services; 
+b) Write a query that simulates an INTERSECTION to find all residents who are subscribed 
+to both water and electricity services. 
+Answer: 
+SELECT r.Name 
+FROM Residents r 
+JOIN Billing b1 ON r.ResidentID = b1.ResidentID 
+JOIN Services s1 ON b1.ServiceID = s1.ServiceID AND s1.ServiceName = 'Water' 
+JOIN Billing b2 ON r.ResidentID = b2.ResidentID 
+JOIN Services s2 ON b2.ServiceID = s2.ServiceID AND s2.ServiceName = 'Electricity'; 
+c) UPDATE the relevant table(s) to increase the monthly billing amount by 10% for all 
+residents in a specific suburb of your choice. 
+Answer: 
+UPDATE Billing 
+SET AmountDue = AmountDue * 1.10 
+WHERE ResidentID IN ( 
+SELECT ResidentID FROM Residents WHERE Address LIKE '%Khayelitsha%' 
+); 
+d) DELETE any resident who is not subscribed to any service (i.e., not found in your billing 
+or service subscription table). 
+Answer: 
+DELETE FROM Residents 
+WHERE ResidentID NOT IN (SELECT DISTINCT ResidentID FROM Billing); 
+e) ALTER one of your tables to add a new column for Email address for residents. 
+Answer: 
+ALTER TABLE Residents 
+ADD Email VARCHAR(100); 
+f) 
+Write an aggregate query to display the total revenue generated from each service 
+across all residents. 
+Answer: 
+SELECT s.ServiceName, SUM(b.AmountDue) AS TotalRevenue 
+FROM Billing b 
+JOIN Services s ON b.ServiceID = s.ServiceID 
+GROUP BY s.ServiceName; 
+Bonus: Create a view that shows each resident's name, suburb, and their total monthly amount 
+due. 
+Answer: 
+CREATE VIEW ResidentBills AS 
+SELECT r.Name, r.Address AS Suburb, SUM(b.AmountDue) AS TotalAmountDue 
+FROM Residents r 
+JOIN Billing b ON r.ResidentID = b.ResidentID
+GROUP BY r.Name,r.Address;
+
+
+
 
 
 
