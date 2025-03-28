@@ -11,4 +11,8 @@ int main(){
 return 0;
 }
 ```
+```javascript
+let value = 5;
+return 5 +value;
 
+```
