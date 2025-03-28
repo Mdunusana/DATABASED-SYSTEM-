@@ -16,6 +16,8 @@ let value = 5;
 return 5 +value;
 
 ```
+
+$x^2 +\sqrt(4)x + 2 \approx 5$
 # Header 1
 ## Heafer 2
 ### Header
