@@ -21,3 +21,6 @@ $x^2 +\sqrt(4)x + 2 \approx 5$
 # Header 1
 ## Heafer 2
 ### Header
+``` SQL
+CREATE TABLE ();
+```
