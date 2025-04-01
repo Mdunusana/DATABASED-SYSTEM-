@@ -4,3 +4,87 @@
 3. MANIPULATING THETABLES , INSERTING ANDF RETRIVING , MODIFYING AND DELETING THE TABLES 
 
 ## CREATING THE DATABASE 
+
+``` SQL
+CREATE DATABASE username;
+````
+
+``` SQL
+SELECT DATABASE ();
+```
+
+``` SQL
+USE username;
+SELECT DATABASE();
+``` 
+### CREATING TABLES 
+
+``` SQL
+CREATE TABLES president
+(
+last_name VARCHAR(15) NOT NULL,
+first_name VARCHAR(15) NOT NULL,
+suffix VARCHAR(5) NULL,
+city VARCHAR(20) NOT NULL,
+state VARCHAR(2) NOT NULL,
+birth DATE NOT NULL,
+death DATE NULL
+);
+```
+``` SQL
+CREATE TABLE member
+(
+menber-id INT UNSIGNED NOT NULL AUTO_INCREMENT ,
+PRIMARY KEY (member_id),
+last_name VARCHAR(20) NOT NULL,
+first_name VARCHAR(20) NOT NULL,
+suffix VARCHAR (5) NULL,
+expiration DATE NULL,
+email VARCHAR(100),
+);
+```
+```SQL
+SHOW TABLES ;
+```
+``` SQL
+SHOW DATABASES;
+```
+ IMPORTANT KEYS : AUTO INCREMENT ( THIS ALLOWS TO GENERATE UNIQUE EVENTS ON THE TABLE .
+### ADDING NEW ROWS ON THE DATABASE 
+``` SQL
+INSERCT INTO student VALUES( 'kely','M','NULL');
+INSERCT INTO grades_events VALUES('2012-09-03','N','NULL');
+```
+### ADDING NEW ROWS FROM A FILE 
+
+```SQL
+LOAD DATA LOCAL  INFILE 'member.txt' INTO TABLE member;
+```
+### RETREIVING INFORMATION
+``` SQL
+
+SELECT * FROM president;
+
+```
+##### example 
+``` SQL 
+SELECT name FROM student;
+```
+```  QSL
+SELECT name ,sex,student_id   FROM student;
+### specifying retrieval critria 
+```SQL
+SELECT *FROM score WHERE score >95;
+```
+
+   MEANING OF THE NULL VALUE ; IT MEANS THAT NO VALUE OR UNKNOWN VALUE ,AND CANMNOT BE COMPARED 
+NULL=0
+
+
+```SQL
+SELECT COUNT(*) FROM member;
+```
+#### deleting from the existing table 
+``` SQL
+DELETE FROM president WHERE state = 'OH';
+```
