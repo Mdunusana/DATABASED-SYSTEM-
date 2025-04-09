@@ -1,0 +1,122 @@
+##1. Attribute Domains
+Domain Name	Description	Data Type	Allowed Range	Justification
+portia_qual_ID	Qualification ID (e.g., BENG01)	VARCHAR(10)	BENG01–BENG99	Unique ID, expandable
+portia_qual_Name	Name of Qualification	VARCHAR(100)	Text only	Room for full titles
+portia_qual_Years	Duration of qualification in years	INT(1)	3–5	Typical degree duration
+portia_sub_ID	Subject ID (e.g., SUB001)	VARCHAR(10)	SUB001–SUB999	Trackable, simple
+portia_sub_Name	Subject name	VARCHAR(100)	Text	Full-length names
+portia_sub_Credits	Subject credit value	INT(2)	5–20	Common credit range
+portia_sub_Semester	Semester offered	INT(1)	1 or 2	Two semesters/year
+portia_student_ID	Student number (e.g., STU2023001)	VARCHAR(15)	Unique alphanumeric ID	Future-proofing
+portia_student_Name	Full student name	VARCHAR(100)	Text	Names vary in length
+portia_student_Email	Student email address	VARCHAR(100)	Email format	Standard max size
+portia_student_DOB	Date of birth	DATE	YYYY-MM-DD	Accurate age tracking
+portia_student_Qual	Qualification ID of the student	VARCHAR(10)	FK to Qualification	Reference key
+
+ ##2. DDL – Create Tables
+```sql
+CREATE TABLE portia_qualification (
+    portia_qual_ID VARCHAR(10) PRIMARY KEY,
+    portia_qual_Name VARCHAR(100),
+    portia_qual_Years INT(1)
+);
+```
+```SQL
+CREATE TABLE portia_subject (
+    portia_sub_ID VARCHAR(10) PRIMARY KEY,
+    portia_sub_Name VARCHAR(100),
+    portia_sub_Credits INT(2),
+    portia_sub_Semester INT(1),
+    portia_qual_ID VARCHAR(10),
+    FOREIGN KEY (portia_qual_ID) REFERENCES portia_qualification(portia_qual_ID)
+);
+```
+```SQL
+
+CREATE TABLE portia_student (
+    portia_student_ID VARCHAR(15) PRIMARY KEY,
+    portia_student_Name VARCHAR(100),
+    portia_student_Email VARCHAR(100),
+    portia_student_DOB DATE,
+    portia_qual_ID VARCHAR(10),
+    FOREIGN KEY (portia_qual_ID) REFERENCES portia_qualification(portia_qual_ID)
+);
+```
+```SQL
+
+3.## DML – Insert Data
+
+-- Qualifications
+INSERT INTO portia_qualification VALUES
+('BENG01', 'Bachelor of Engineering Tech: Electrical', 4),
+('BENG02', 'Bachelor of Engineering Tech: Civil', 4),
+('BENG03', 'Bachelor of Engineering Tech: Mechanical', 4),
+('BENG04', 'Bachelor of Engineering Tech: Software', 4),
+('BENG05', 'Bachelor of Engineering Tech: Industrial', 4),
+('BENG06', 'Bachelor of Engineering Tech: Chemical', 4);
+
+-- Subjects
+INSERT INTO portia_subject VALUES
+('SUB001', 'Circuit Theory', 12, 1, 'BENG01'),
+('SUB002', 'Digital Systems', 10, 2, 'BENG01'),
+('SUB003', 'Structural Analysis', 10, 1, 'BENG02'),
+('SUB004', 'Thermodynamics', 10, 2, 'BENG03'),
+('SUB005', 'Software Engineering', 10, 1, 'BENG04'),
+('SUB006', 'Process Engineering', 12, 2, 'BENG06');
+```
+```SQL
+
+-- Students
+INSERT INTO portia_student VALUES
+('STU2023001', 'Alice Mokoena', 'alice@example.com', '2002-04-05', 'BENG01'),
+('STU2023002', 'Brian Nkosi', 'brian@example.com', '2001-12-10', 'BENG02'),
+('STU2023003', 'Carla Smith', 'carla@example.com', '2002-06-20', 'BENG03'),
+('STU2023004', 'David Ndlovu', 'david@example.com', '2003-01-15', 'BENG04'),
+('STU2023005', 'Elisa Peters', 'elisa@example.com', '2002-09-08', 'BENG05'),
+('STU2023006', 'Fikile Dlamini', 'fikile@example.com', '2001-03-30', 'BENG06');
+
+``SQL
+
+4. SELECT * FROM Each Table
+
+SELECT * FROM portia_qualification;
+SELECT * FROM portia_subject;
+SELECT * FROM portia_student;
+
+
+```
+``SQL
+
+##5. SELECT DISTINCT from Each Table
+
+SELECT DISTINCT portia_qual_Years FROM portia_qualification;
+SELECT DISTINCT portia_sub_Semester FROM portia_subject;
+SELECT DISTINCT portia_student_DOB FROM portia_student;
+```
+```SQL
+
+
+##6. ORDER 
+
+```SQL
+SELECT * FROM portia_subject ORDER BY portia_sub_Name ASC;
+SELECT * FROM portia_student ORDER BY portia_student_Name DESC;
+```
+7. GROUP BY Examples
+```SQL
+SELECT portia_qual_ID, COUNT(*) AS total_subjects
+FROM portia_subject
+GROUP BY portia_qual_ID;
+```
+```SQL
+SELECT portia_qual_ID, COUNT(*) AS total_students
+FROM portia_student
+GROUP BY portia_qual_ID;
+```
+
+##8. Aggregation Examples
+```sql
+SELECT AVG(portia_sub_Credits) AS avg_credits FROM portia_subject;
+SELECT MIN(portia_student_DOB) AS oldest_student FROM portia_student;
+SELECT MAX(portia_sub_Credits) AS max_credits FROM portia_subject;
+```
